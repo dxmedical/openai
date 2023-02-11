@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diagnostix Internal Open AI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #303030;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: #404040;
+      padding: 20px;
+      box-shadow: 0 0 10px 0 #202020;
+      border-radius: 10px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      background-color: #505050;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #1E90FF;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #response {
+      padding: 20px;
+      background-color: #505050;
+      color: #FFFFFF;
+      border-radius: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="response">
+      <!-- Response from the OpenAI API will be displayed here -->
+    </div>
+  </div>
+  <form>
+    <textarea id="input"></textarea>
+    <button id="submit">Submit</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $("#submit").click(function(e) {
+      e.preventDefault();
+      var input = $("#input").val();
+      $.ajax({
+        type: "POST",
+        url: "https://api.openai.com/v1/engines/davinci/jobs",
+        headers: {
+          "Authorization": "Bearer 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",
+          "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+          "prompt": input,
+          "max_tokens": 150
+        }),
+        success: function(data) {
+          $("#response").text(data.choices[0].text);
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
